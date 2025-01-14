@@ -30,12 +30,16 @@ func stringToIntegerAtoi(s string) int {
 	}
 
 	result := 0
-	digitCount := 0
-	for len(stack) > 0 {
-		top := stack[len(stack)-1]
-		result += top * int(math.Pow10(digitCount))
-		digitCount++
-		stack = stack[:len(stack)-1]
+	for _, ii := range stack {
+		if (result > math.MaxInt32/10) || (result == math.MaxInt32/10 && ii > math.MaxInt32%10) {
+			if sign == 1 {
+				return math.MaxInt32
+			} else {
+				return math.MinInt32
+			}
+		}
+
+		result = result*10 + ii
 	}
 
 	return result * sign
